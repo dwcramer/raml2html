@@ -2,16 +2,11 @@
     <div class="panel panel-white">
         <div class="panel-heading">
             <h4 class="panel-title">
-
-                    <strong><span class="parent">{{parentUrl}}</span>{{relativeUri}}</strong>
-
-
-                <span class="methods">
-                    {{#methods}}
+              <strong><span class="parent">{{parentUrl}}</span><span class="child">{{relativeUri}}</span></strong>
+                <span class="methods">{{#methods}}
                         <a href="#details_panel_{{../uniqueId}}_{{method}}_top"><!-- data-toggle="modal" data-target="#{{../uniqueId}}_{{method}}" -->
                             <span class="badge badge_{{method}}">{{method}}{{lock securedBy}}</span>
-                        </a>
-                    {{/methods}}
+                        </a>{{/methods}}
                 </span>
             </h4>
         </div>
@@ -25,40 +20,25 @@
 
                 <div class="list-group">
                     {{#methods}}
-                        <div class="list-group-item" id="details_panel_{{../uniqueId}}_{{method}}_top">
-                            <a onclick="$('#details_panel_{{../uniqueId}}_{{method}}').collapse('toggle');">
+		    <a class="spaced-anchor" id="details_panel_{{../uniqueId}}_{{method}}_top"/>
+                        <div class="list-group-item">
+                          <div class="method-row {{method}}">    
+                            <a onclick="$('#details_panel_{{../uniqueId}}_{{method}}').collapse('toggle');" title="Expand/Collapse section">
 			      <span class="badge badge_{{method}}">
 			        {{method}}{{lock securedBy}}
 			      </span>
-			    </a> 
-                            <div class="method_description">
-                              
-                              <p style="margin-top: -9px">{{mdFirstSentence description}}</p>
-
+                              <span class="method-shortdesc">{{mdFirstSentence description}}</span>
+			     </a>    
+                            </div>
 			    <div id="details_panel_{{../uniqueId}}_{{method}}" class="panel-collapse collapse">
+                              <div class="method_description">
+                               {{mdRest description}}
 
-
-                            {{mdRest description}}
-                            
-			    <div class="panel-body">
-
-                            <!-- Nav tabs -->
-                            <ul class="nav nav-tabs">
-                                <li class="active">
-                                    <a href="#{{../uniqueId}}_{{method}}_request" data-toggle="tab">Request</a>
-                                </li>
-                                {{#if responses}}
-                                    <li>
-                                        <a href="#{{../../uniqueId}}_{{method}}_response" data-toggle="tab">Response</a>
-                                    </li>
-                                {{/if}}
-                            </ul>
-
-                            <!-- Tab panes -->
-                            <div class="tab-content">
-                                <div class="tab-pane active" id="{{../uniqueId}}_{{method}}_request">
+                            <!-- div class="tab-content" -->
+                            <div class="request" id="{{../uniqueId}}_{{method}}_request">
+                              <hr/><h3>Request</h3>
                                     {{#if ../allUriParameters}}
-                                        <h3>URI Parameters</h3>
+                                        <h4>URI Parameters</h4>
                                         <ul>
                                             {{#each ../../allUriParameters}}
                                                 {{> item}}
@@ -67,7 +47,7 @@
                                     {{/if}}
 
                                     {{#if headers}}
-                                        <h3>Headers</h3>
+                                        <h4>Headers</h4>
                                         <ul>
                                             {{#each headers}}
                                                 {{> item}}
@@ -76,7 +56,7 @@
                                     {{/if}}
 
                                     {{#if queryParameters}}
-                                        <h3>Query Parameters</h3>
+                                        <h4>Query Parameters</h4>
                                         <ul>
                                             {{#each queryParameters}}
                                                 {{> item}}
@@ -85,79 +65,67 @@
                                     {{/if}}
 
                                     {{#if body}}
-                                        <h3>Body</h3>
                                         {{#each body}}
-                                            <p><strong>Type:</strong> {{@key}}</p>
+                                        <div class="body">
+                                            <strong>{{@key}}</strong>
                                             {{#if formParameters}}
-                                                <strong>Form Parameters</strong>
+                                                <p><strong>Form Parameters</strong>
                                                 <ul>
                                                     {{#each formParameters}}
                                                         {{> item}}
                                                     {{/each}}
-                                                </ul>
-                                            {{/if}}
-
-                                            {{#if this.schema}}
-                                                <p><strong>Schema</strong>: TODO: Link to schema</p>
-                                                <!--pre><code>{{this.schema}}</code></pre-->
+                                                </ul></p>
                                             {{/if}}
 
                                             {{#if this.example}}
-                                                <p><strong>Example</strong>:</p>
-
-
+                                                <dl class="dl-horizontal"><dt>Example:</dt><dd>
 <pre class="language-xml">
 {{this.example}}
-</pre>
+</pre></dd></dl>
 
 
                                             {{/if}}
+                                        </div>
                                         {{/each}}
                                     {{/if}}
                                 </div>
 
                                 {{#if responses}}
-                                    <div class="tab-pane" id="{{../../uniqueId}}_{{method}}_response">
-                                        {{#each responses}}
-                                            <h2>HTTP status code <a href="http://httpstatus.es/{{@key}}" target="_blank">{{@key}}</a></h2>
-                                            {{md this.description}}
+                                    <div class="response" id="{{../../uniqueId}}_{{method}}_response">
+                                    <hr><h3>Response</h3>
+                                    {{#each responses}}
+                                            <table><tr><td class="key"><a href="http://httpstatus.es/{{@key}}" target="_blank" title="HTTP Status Code">{{@key}}</a>:</td><td>{{md this.description}}
 
                                             {{#if this.headers}}
-                                                <h3>Headers</h3>
+                                            <p>Headers:</p>
                                                 <ul>
                                                     {{#each this.headers}}
                                                         {{> item}}
                                                     {{/each}}
                                                 </ul>
                                             {{/if}}
-
-                                            {{#if this.body}}
-                                                <h3>Body</h3>
+                                            </td></tr></table>
+                                            {{#if this.body}}<div class="body">
                                                 {{#each this.body}}
-                                                    <p><strong>Type: {{@key}}</strong></p>
-
-                                                    {{#if this.schema}}
-                                                        <p><strong>Schema</strong>: TODO Link to schema</p>
-                                                        <!--pre><code>{{this.schema}}</code></pre-->
+                                                <strong>{{@key}}</strong>:{{#if this.schema}} 
+                                                        Schema (TODO Hyperlink)
                                                     {{/if}}
 
                                                     {{#if this.example}}
-                                                        <p><strong>Example</strong>:</p>
-
-
-<pre class="language-xml">
+                                                    <dl class="dl-horizontal">
+                                                        <dt>Example:</dt><dd>
+<div><pre class="language-xml">
 {{this.example}}
-</pre>
-
+</pre></div>
+                                                        </dd></dl>
                                                     {{/if}}
                                                 {{/each}}
-                                            {{/if}}
+                                            </div>{{/if}}
                                         {{/each}}
-                                    </div>
-                                {{/if}}
-</div>
+                                      </div>
+                                {{/if}} 
+                                <a class="top" href="#">Top</a>
 				</div>
-			      </div>				
                             </div>
 
                             <div class="clearfix"></div>
@@ -165,7 +133,6 @@
                     {{/methods}}
                 </div>
             </div>
-
     </div>
 {{/emptyResourceCheck}}
 

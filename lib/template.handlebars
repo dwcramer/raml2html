@@ -1,5 +1,5 @@
 ---
-title: {{title}} API documentation{{#if version}} <small>version {{version}}</small>{{/if}}
+title: {{title}} API documentation {{#if version}}version {{version}}{{/if}}
 ---
 
 {::options html_to_native="true" /}
@@ -8,11 +8,11 @@ title: {{title}} API documentation{{#if version}} <small>version {{version}}</sm
 <div class="row">
 
                <div class="page-header">
-                    <h1>{{title}} API documentation{{#if version}} <small>version {{version}}</small>{{/if}}</h1>
+                    <h1>{{title}} API documentation {{#if version}}<small>version {{version}}</small>{{/if}}</h1>
                     <p>{{baseUri}}</p>
 
                     {{#documentation}}
-                        <h3 id="{{uniqueId}}"><a href="#{{uniqueId}}">{{title}}</a></h3>
+                        <h3 id="{{uniqueId}}">{{title}}</h3>
                         {{md content}}
                     {{/documentation}}
 		    <p><a class="expandall" href="javascript:void(0);">Expand all</a> | <a class="collapseall" href="javascript:void(0);">Collapse all</a></p>                
