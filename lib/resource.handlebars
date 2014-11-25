@@ -67,7 +67,9 @@
                                     {{#if body}}
                                         {{#each body}}
                                         <div class="body">
-                                            <strong>{{@key}}</strong>
+                                            <strong>{{@key}}</strong>:{{#if this.schema}} 
+                                                      {{isSchemaUrl this.schema}}
+                                                    {{/if}}
                                             {{#if formParameters}}
                                                 <p><strong>Form Parameters</strong>
                                                 <ul>
@@ -108,7 +110,7 @@
                                             {{#if this.body}}<div class="body">
                                                 {{#each this.body}}
                                                 <strong>{{@key}}</strong>:{{#if this.schema}} 
-                                                        Schema (TODO Hyperlink)
+                                                      {{isSchemaUrl this.schema}}
                                                     {{/if}}
 
                                                     {{#if this.example}}
