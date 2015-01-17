@@ -33,7 +33,7 @@
 			    <div id="details_panel_{{../uniqueId}}_{{method}}" class="panel-collapse collapse">
                               <div class="method_description">
                                {{mdRest description}}
-
+                           {{#emptyRequestCheck ../allUriParameters queryParameters headers body}}
                             <!-- div class="tab-content" -->
                             <div class="request" id="{{../uniqueId}}_{{method}}_request">
                               <hr/><h3>Request</h3>
@@ -92,6 +92,7 @@
                                     {{/if}}
                                 </div>
 
+                                {{/emptyRequestCheck}}
                                 {{#if responses}}
                                     <div class="response" id="{{../../uniqueId}}_{{method}}_response">
                                     <hr><h3>Response</h3>
